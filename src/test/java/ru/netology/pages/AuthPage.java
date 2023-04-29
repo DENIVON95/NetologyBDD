@@ -15,11 +15,9 @@ public class AuthPage {
     private final SelenideElement passwordInput = $("[data-test-id='password'] input");
     private final SelenideElement loginButton = $("button[data-test-id='action-login']");
 
-    public AuthPage open() {
+    public AuthPage() {
         Selenide.open("/");
         mainElement.shouldBe(visible, Duration.ofSeconds(5));
-
-        return this;
     }
 
     public AuthPage setLogin(String login) {
@@ -38,12 +36,12 @@ public class AuthPage {
         return this;
     }
 
-    public AuthPage clickLoginButton() {
+    public VerificationPage clickLoginButton() {
         loginButton
                 .shouldBe(visible)
                 .click();
 
-        return this;
+        return new VerificationPage();
     }
 
 }
