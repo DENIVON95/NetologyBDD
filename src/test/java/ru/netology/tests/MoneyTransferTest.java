@@ -38,18 +38,21 @@ public class MoneyTransferTest extends BaseTest {
     @ParameterizedTest
     @MethodSource("provideCardsInfo")
     public void shouldTransferMoneyFromOneCardToAnother(Card cardToTransferTo,
-                                                        Card cardToWithdrawFrom, String transferCardExpectedBalance, String withdrawCardExpectedBalance) {
-        DepositCardForm depositCardForm = new DepositCardForm();
+                                                        Card cardToWithdrawFrom) {
+
+        int transferCardExpectedBalance = dashBoardPage.getCardBalance(cardToTransferTo.getOrder()) + 2000;
+        int withdrawCardExpectedBalance = dashBoardPage.getCardBalance(cardToWithdrawFrom.getOrder()) - 2000;
+
 
         dashBoardPage
                 .clickDepositButton(cardToTransferTo.getOrder());
-        depositCardForm
+        new DepositCardForm()
                 .setAmount("2000")
                 .setFrom(cardToWithdrawFrom.getNumber())
                 .clickTransferButton();
 
-        String transferCardCurrentBalance = dashBoardPage.getCardBalance(cardToTransferTo.getOrder());
-        String withdrawCardCurrentBalance = dashBoardPage.getCardBalance(cardToWithdrawFrom.getOrder());
+        int transferCardCurrentBalance = dashBoardPage.getCardBalance(cardToTransferTo.getOrder());
+        int withdrawCardCurrentBalance = dashBoardPage.getCardBalance(cardToWithdrawFrom.getOrder());
         assertEquals(transferCardExpectedBalance, transferCardCurrentBalance,
                 format("Текущий баланс карты '%s' не совпадает с ожидаемым '%s'", transferCardCurrentBalance, transferCardExpectedBalance));
         assertEquals(withdrawCardExpectedBalance, withdrawCardCurrentBalance,
@@ -63,8 +66,8 @@ public class MoneyTransferTest extends BaseTest {
         Card secondCard = user.getCards().get(1);
 
         return Stream.of(
-                Arguments.of(firstCard, secondCard, "12000", "8000"),
-                Arguments.of(secondCard, firstCard, "10000", "10000")
+                Arguments.of(firstCard, secondCard),
+                Arguments.of(secondCard, firstCard)
         );
     }
 

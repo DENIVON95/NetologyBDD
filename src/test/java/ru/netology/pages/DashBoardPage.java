@@ -31,7 +31,7 @@ public class DashBoardPage {
         return this;
     }
 
-    public String getCardBalance(int cardNumber) {
+    public int getCardBalance(int cardNumber) {
         String cardInfo = cardsList
                 .shouldHave(CollectionCondition.sizeGreaterThan(0))
                 .get(cardNumber - 1)
@@ -39,7 +39,7 @@ public class DashBoardPage {
 
         int start = cardInfo.indexOf(balanceStart);
         int finish = cardInfo.indexOf(balanceFinish);
-        return cardInfo.substring(start + balanceStart.length(), finish);
+        return Integer.parseInt(cardInfo.substring(start + balanceStart.length(), finish));
     }
 
 }

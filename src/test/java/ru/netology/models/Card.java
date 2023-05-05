@@ -9,6 +9,5 @@ import lombok.Setter;
 @AllArgsConstructor
 public class Card {
     private String number;
-    private String balance;
     private int order;
 }
